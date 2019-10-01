@@ -15,9 +15,7 @@ class Exercise2(implicit ec: ExecutionContext) {
   private def getAndParseBatch(batch: BatchRequest): Future[List[ParsedResponse]] =
     Http.getBatch(batch).map(parseResponse(_, ParsedResponse.parser))
 
-  private def parseResponse(responses: BatchResponse,
-                            parser: String => Try[ParsedResponse]): List[ParsedResponse] =
+  private def parseResponse(responses: BatchResponse, parser: String => Try[ParsedResponse]): List[ParsedResponse] =
     responses.responses.flatMap(raw => parser(raw.value).toOption)
 
 }
-

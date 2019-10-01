@@ -21,20 +21,19 @@ class Exercise3Test extends FunSpec with Matchers with ScalaFutures with EitherV
 
   describe("successful cases") {
 
-    val xs = List(1,2,3,4,5,6,7,8)
+    val xs = List(1, 2, 3, 4, 5, 6, 7, 8)
     val requests: List[Request] = xs.map(i => ValidRequest.apply(i.toString))
     val expected = xs.map(ParsedResponse.apply)
 
     it("Should return the input list, parsed, in order") {
       val result = br.requestBatch(requests, n)
-      result.futureValue.toEither.right.value should contain theSameElementsInOrderAs expected
+      (result.futureValue.toEither.right.value should contain).theSameElementsInOrderAs(expected)
     }
   }
 
   describe("unsuccessful cases") {
 
     val xs1 = List(1, 2, 3, 4).map(i => ValidRequest.apply(i.toString))
-
 
     it("should fail the future if any future fails") {
       val xs2 = List(BatchFail, BatchFail, BatchFail)

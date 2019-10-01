@@ -9,10 +9,10 @@ import mf.http.Http
 import scala.util.control.NonFatal
 
 /**
-  * Should ignore network failures
-  * Should ignore parsing failures
-  * @param ec
-  */
+ * Should ignore network failures
+ * Should ignore parsing failures
+ * @param ec
+ */
 class Exercise4(implicit ec: ExecutionContext) {
   def requestBatch(requests: List[Request], batchSize: Int): Future[List[ParsedResponse]] = {
     val batches = requests.grouped(batchSize).toList.map(BatchRequest.apply)
@@ -24,8 +24,7 @@ class Exercise4(implicit ec: ExecutionContext) {
       case NonFatal(_) => Future.successful(List())
     }
 
-  private def parseResponse(responses: BatchResponse,
-                            parser: String => Try[ParsedResponse]): List[ParsedResponse] =
+  private def parseResponse(responses: BatchResponse, parser: String => Try[ParsedResponse]): List[ParsedResponse] =
     responses.responses.flatMap(raw => parser(raw.value).toOption)
 
 }

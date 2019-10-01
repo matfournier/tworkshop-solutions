@@ -14,9 +14,8 @@ class Exercise1Task {
     batches.traverse(getAndParse).map(_.combineAll)
   }
 
-  private def getAndParse(batchRequest: BatchRequest): Task[Either[ServiceError, List[ParsedResponse]]] = {
+  private def getAndParse(batchRequest: BatchRequest): Task[Either[ServiceError, List[ParsedResponse]]] =
     Http.getBatchTask(batchRequest).map(batchResponse => parseResponse(batchResponse, ParsedResponse.parser))
-  }
 
   private def parseResponse(responses: BatchResponse,
                             parser: String => Try[ParsedResponse]): Either[ServiceError, List[ParsedResponse]] =

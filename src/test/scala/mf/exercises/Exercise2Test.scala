@@ -8,10 +8,11 @@ import org.scalatest.{EitherValues, FunSpec, Matchers}
 import org.scalatest.time.{Millis, Seconds, Span}
 
 import scala.concurrent.ExecutionContext
+
 /**
-  * Should fail if any call to Http.getBatch fails
-  * Should ignore (drop) parsing failures if the ParsedResponse.parser fails to parse an element
-  */
+ * Should fail if any call to Http.getBatch fails
+ * Should ignore (drop) parsing failures if the ParsedResponse.parser fails to parse an element
+ */
 class Exercise2Test extends FunSpec with Matchers with ScalaFutures with EitherValues {
 
   implicit val ec = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(10))
@@ -24,21 +25,21 @@ class Exercise2Test extends FunSpec with Matchers with ScalaFutures with EitherV
 
   describe("successful cases") {
 
-    val xs = List(1,2,3,4,5,6,7,8)
+    val xs = List(1, 2, 3, 4, 5, 6, 7, 8)
     val requests: List[Request] = xs.map(i => ValidRequest.apply(i.toString))
     val expected = xs.map(ParsedResponse.apply)
 
     it("Should return the input list, parsed, in order") {
       val result = br.requestBatch(requests, n)
-      result.futureValue should contain theSameElementsInOrderAs expected
+      (result.futureValue should contain).theSameElementsInOrderAs(expected)
     }
     it("should ignore parsing failures") {
       val xs1 = List(1, 2, 3, 4).map(i => ValidRequest.apply(i.toString))
       val xs2 = List("jdsf", "dsfjsfs", "7", "8", "kds", "sjdf", "sjd", "sjd").map(ValidRequest.apply)
       val requests: List[Request] = xs1 ++ xs2
       val result = br.requestBatch(requests, n)
-      val expected = List(1,2,3,4,7,8).map(ParsedResponse.apply)
-      result.futureValue should contain theSameElementsInOrderAs expected
+      val expected = List(1, 2, 3, 4, 7, 8).map(ParsedResponse.apply)
+      (result.futureValue should contain).theSameElementsInOrderAs(expected)
     }
   }
 
