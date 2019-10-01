@@ -21,9 +21,8 @@ outputStrategy := Some(StdoutOutput)
 scalacOptions ++= List(
   "-feature",
   "-language:higherKinds",
-  "-Xlint",
+  //"-Xlint",
   "-Yrangepos",
-  "-Ywarn-unused",
+  //"-Ywarn-unused",
   "-Ypartial-unification"
 )
-
